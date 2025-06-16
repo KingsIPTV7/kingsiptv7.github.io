@@ -1,0 +1,3 @@
+#EXTINF:2.040,
+/deliveries/1f91f339764769795139d5ea93b4d4e1c9e104d1.m3u8/seg-9-v1-a1.ts
+#EXT-X-ENDLIST
