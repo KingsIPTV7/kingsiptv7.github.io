@@ -4,36 +4,121 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Happy Birthday Priyanshi 🎂</title>
-
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Poppins',sans-serif;
-}
-
+*{margin:0;padding:0;box-sizing:border-box}
 body{
-    height:100vh;
-    overflow:hidden;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:linear-gradient(135deg,#ff6ec4,#7873f5);
+font-family:Arial,sans-serif;
+overflow:hidden;
+height:100vh;
+background:linear-gradient(-45deg,#ff6ec4,#7873f5,#23a6d5,#ff9a9e);
+background-size:400% 400%;
+animation:bg 12s ease infinite;
+display:flex;justify-content:center;align-items:center;color:#fff;
+}
+@keyframes bg{0%{background-position:0 50%}50%{background-position:100% 50%}100%{background-position:0 50%}}
+.card{
+width:min(92vw,700px);
+padding:35px;
+text-align:center;
+background:rgba(255,255,255,.12);
+backdrop-filter:blur(15px);
+border-radius:30px;
+box-shadow:0 8px 40px rgba(0,0,0,.25);
+}
+h1{font-size:clamp(2rem,5vw,4rem);margin-bottom:10px}
+.name{color:#fff6a8}
+.cake{font-size:80px;animation:bounce 1.8s infinite}
+@keyframes bounce{50%{transform:translateY(-12px)}}
+.msg{margin-top:15px;line-height:1.7;font-size:1.1rem}
+button{
+margin-top:20px;padding:12px 24px;border:none;border-radius:999px;
+cursor:pointer;font-size:1rem;font-weight:bold
+}
+#surprise{display:none;margin-top:20px;font-size:1.2rem}
+.heart,.balloon{
+position:absolute;pointer-events:none;animation:float linear infinite;
+}
+@keyframes float{
+from{transform:translateY(110vh)}
+to{transform:translateY(-120px)}
+}
+canvas{position:fixed;inset:0;pointer-events:none}
+</style>
+</head>
+<body>
+<canvas id="fw"></canvas>
+
+<div class="card">
+<div class="cake">🎂</div>
+<h1>Happy Birthday <span class="name">Priyanshi</span> 💖</h1>
+<p class="msg" id="typing"></p>
+<button onclick="showSurprise()">🎁 Open Surprise</button>
+<div id="surprise">
+🥳 Wishing you happiness, success, laughter and countless beautiful memories.<br>
+✨ Keep smiling and enjoy your special day, Priyanshi! ✨
+</div>
+</div>
+
+<script>
+const text="May your birthday be filled with joy, laughter, success and unforgettable memories. Have an amazing day! 🎉";
+let i=0;
+function type(){
+ if(i<text.length){
+  document.getElementById("typing").innerHTML+=text.charAt(i++);
+  setTimeout(type,35);
+ }
+}
+type();
+
+for(let i=0;i<30;i++){
+ let h=document.createElement("div");
+ h.className=Math.random()>.5?"heart":"balloon";
+ h.innerHTML=Math.random()>.5?"💖":"🎈";
+ h.style.left=Math.random()*100+"vw";
+ h.style.fontSize=(20+Math.random()*25)+"px";
+ h.style.animationDuration=(8+Math.random()*10)+"s";
+ document.body.appendChild(h);
 }
 
-.bg{
-    position:absolute;
-    width:100%;
-    height:100%;
-    overflow:hidden;
+function showSurprise(){
+ document.getElementById("surprise").style.display="block";
+ fireworks();
 }
 
-.circle{
-    position:absolute;
-    border-radius:50%;
-    background:rgba(255,255,255,0.15);
-    animation:float 10s infinite linear;
+const c=document.getElementById("fw");
+const ctx=c.getContext("2d");
+function resize(){c.width=innerWidth;c.height=innerHeight}
+resize();addEventListener("resize",resize);
+
+function fireworks(){
+ let parts=[];
+ for(let n=0;n<180;n++){
+   parts.push({
+    x:c.width/2,y:c.height/2,
+    vx:(Math.random()-0.5)*8,
+    vy:(Math.random()-0.5)*8,
+    a:1
+   });
+ }
+ let id=setInterval(()=>{
+   ctx.clearRect(0,0,c.width,c.height);
+   parts.forEach(p=>{
+     p.x+=p.vx;p.y+=p.vy;p.a-=0.01;
+     ctx.globalAlpha=Math.max(p.a,0);
+     ctx.beginPath();
+     ctx.arc(p.x,p.y,3,0,Math.PI*2);
+     ctx.fillStyle="white";
+     ctx.fill();
+   });
+   if(parts.every(p=>p.a<=0)){
+      clearInterval(id);
+      ctx.clearRect(0,0,c.width,c.height);
+   }
+ },16);
+}
+</script>
+</body>
+</html>
 }
 
 @keyframes float{
